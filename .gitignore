@@ -1,0 +1,7 @@
+.git/
+.idea/
+.DS_Store
+/bin/*
+!/bin/compile_proto.sh
+.env
+/helpers-ens-resolver
