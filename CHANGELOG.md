@@ -11,3 +11,4 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Added gRPC server for resolving ens name direct/reverse
 - Added prometheus metrics exporter
 - Added base health status exporter
+- Added dockerfile
