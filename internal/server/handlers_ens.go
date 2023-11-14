@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"helpers-ens-resolver/internal/infura"
-	"helpers-ens-resolver/internal/server/forms"
-	"helpers-ens-resolver/proto"
+	"github.com/goverland-labs/helpers-ens-resolver/internal/infura"
+	"github.com/goverland-labs/helpers-ens-resolver/internal/server/forms"
+	"github.com/goverland-labs/helpers-ens-resolver/proto"
 )
 
 type EnsClient interface {

@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"helpers-ens-resolver/proto"
+	"github.com/goverland-labs/helpers-ens-resolver/proto"
 )
 
 var addressRE = regexp.MustCompile(`0x[a-fA-F0-9]{40}`)

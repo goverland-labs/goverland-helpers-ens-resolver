@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"helpers-ens-resolver/proto"
+	"github.com/goverland-labs/helpers-ens-resolver/proto"
 )
 
 var domainRE = regexp.MustCompile(`[a-zA-Z0-9-.]+\.eth`)

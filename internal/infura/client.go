@@ -7,7 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/wealdtech/go-ens/v3"
 
-	"helpers-ens-resolver/internal/config"
+	"github.com/goverland-labs/helpers-ens-resolver/internal/config"
 )
 
 type Client struct {

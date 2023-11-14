@@ -8,13 +8,13 @@ import (
 
 	"github.com/s-larionov/process-manager"
 
-	"helpers-ens-resolver/internal/config"
-	"helpers-ens-resolver/internal/infura"
-	"helpers-ens-resolver/internal/server"
-	"helpers-ens-resolver/pkg/grpcsrv"
-	"helpers-ens-resolver/pkg/health"
-	"helpers-ens-resolver/pkg/prometheus"
-	"helpers-ens-resolver/proto"
+	"github.com/goverland-labs/helpers-ens-resolver/internal/config"
+	"github.com/goverland-labs/helpers-ens-resolver/internal/infura"
+	"github.com/goverland-labs/helpers-ens-resolver/internal/server"
+	"github.com/goverland-labs/helpers-ens-resolver/pkg/grpcsrv"
+	"github.com/goverland-labs/helpers-ens-resolver/pkg/health"
+	"github.com/goverland-labs/helpers-ens-resolver/pkg/prometheus"
+	"github.com/goverland-labs/helpers-ens-resolver/proto"
 )
 
 type Application struct {

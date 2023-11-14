@@ -8,7 +8,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/s-larionov/process-manager"
 
-	"helpers-ens-resolver/pkg/middleware"
+	"github.com/goverland-labs/helpers-ens-resolver/pkg/middleware"
 )
 
 func NewHealthCheckServer(listen, path string, handler http.Handler) *http.Server {
