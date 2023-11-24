@@ -6,6 +6,8 @@ require (
 	github.com/caarlos0/env/v8 v8.0.0
 	github.com/ethereum/go-ethereum v1.13.5
 	github.com/gorilla/mux v1.8.1
+	github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus v1.0.0
+	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1
 	github.com/prometheus/client_golang v1.17.0
 	github.com/rs/zerolog v1.31.0
 	github.com/s-larionov/process-manager v0.0.1
@@ -21,13 +23,11 @@ require (
 	github.com/bits-and-blooms/bitset v1.7.0 // indirect
 	github.com/btcsuite/btcd/btcec/v2 v2.2.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
-	github.com/cncf/xds/go v0.0.0-20230607035331-e9ce68804cb4 // indirect
 	github.com/consensys/bavard v0.1.13 // indirect
 	github.com/consensys/gnark-crypto v0.12.1 // indirect
 	github.com/crate-crypto/go-kzg-4844 v0.7.0 // indirect
 	github.com/deckarep/golang-set/v2 v2.1.0 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
-	github.com/envoyproxy/protoc-gen-validate v1.0.2 // indirect
 	github.com/ethereum/c-kzg-4844 v0.4.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-ole/go-ole v1.2.5 // indirect
@@ -35,8 +35,6 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.3.1 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
-	github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus v1.0.0 // indirect
-	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1 // indirect
 	github.com/holiman/uint256 v1.2.3 // indirect
 	github.com/ipfs/go-cid v0.4.1 // indirect
 	github.com/klauspost/cpuid/v2 v2.0.9 // indirect

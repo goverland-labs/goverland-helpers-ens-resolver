@@ -7,6 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.0.1] - 2023-11-24
+
 ### Added
 - Added gRPC server for resolving ens name direct/reverse
 - Added prometheus metrics exporter
