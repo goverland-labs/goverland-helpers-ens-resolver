@@ -11,6 +11,7 @@ import (
 	"github.com/goverland-labs/helpers-ens-resolver/internal/config"
 	"github.com/goverland-labs/helpers-ens-resolver/internal/infura"
 	"github.com/goverland-labs/helpers-ens-resolver/internal/server"
+	"github.com/goverland-labs/helpers-ens-resolver/internal/stamp"
 	"github.com/goverland-labs/helpers-ens-resolver/pkg/grpcsrv"
 	"github.com/goverland-labs/helpers-ens-resolver/pkg/health"
 	"github.com/goverland-labs/helpers-ens-resolver/pkg/prometheus"
@@ -23,6 +24,7 @@ type Application struct {
 	cfg     config.App
 
 	infura *infura.Client
+	stamp  *stamp.Client
 }
 
 func NewApplication(cfg config.App) (*Application, error) {
@@ -78,6 +80,14 @@ func (a *Application) initServices() error {
 
 	a.infura = inf
 
+	sdk := stamp.NewSDK(a.cfg.Stamp.Endpoint, nil)
+	sc, err := stamp.NewClient(sdk)
+	if err != nil {
+		return err
+	}
+
+	a.stamp = sc
+
 	return nil
 }
 
@@ -86,7 +96,7 @@ func (a *Application) initGRPCWorker() error {
 		return ctx, nil
 	})
 
-	proto.RegisterEnsServer(srv, server.NewEnsHandler(a.infura))
+	proto.RegisterEnsServer(srv, server.NewEnsHandler(a.stamp))
 	a.manager.AddWorker(grpcsrv.NewGrpcServerWorker("resolve api", srv, a.cfg.GRPC.Listen))
 
 	return nil

@@ -1,18 +1,21 @@
 package infura
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/wealdtech/go-ens/v3"
 
+	internalcache "github.com/goverland-labs/helpers-ens-resolver/internal/cache"
 	"github.com/goverland-labs/helpers-ens-resolver/internal/config"
+	"github.com/goverland-labs/helpers-ens-resolver/internal/models"
 )
 
 type Client struct {
 	client *ethclient.Client
-	cache  *Cache
+	cache  *internalcache.Cache
 }
 
 func NewClient(infura config.Infura) (*Client, error) {
@@ -23,8 +26,16 @@ func NewClient(infura config.Infura) (*Client, error) {
 
 	return &Client{
 		client: cl,
-		cache:  NewCache(),
+		cache:  internalcache.NewCache(),
 	}, nil
+}
+
+func (c *Client) ResolveDomains([]string) ([]models.ResolvedModel, error) {
+	return nil, errors.New("implement me")
+}
+
+func (c *Client) ResolveAddresses([]string) ([]models.ResolvedModel, error) {
+	return nil, errors.New("implement me")
 }
 
 func (c *Client) ResolveDomain(domain string) (string, error) {

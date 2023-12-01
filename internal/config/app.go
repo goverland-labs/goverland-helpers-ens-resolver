@@ -5,5 +5,6 @@ type App struct {
 	Prometheus Prometheus
 	Health     Health
 	Infura     Infura
+	Stamp      Stamp
 	GRPC       GRPC
 }
