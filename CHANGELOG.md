@@ -7,6 +7,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+- Stamp client for resolving ENS names
+
 ## [0.0.1] - 2023-11-24
 
 ### Added

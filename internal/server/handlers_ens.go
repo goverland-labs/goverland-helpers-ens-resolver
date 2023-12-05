@@ -2,16 +2,16 @@ package server
 
 import (
 	"context"
-	"errors"
+	"fmt"
 
-	"github.com/goverland-labs/helpers-ens-resolver/internal/infura"
+	"github.com/goverland-labs/helpers-ens-resolver/internal/models"
 	"github.com/goverland-labs/helpers-ens-resolver/internal/server/forms"
 	"github.com/goverland-labs/helpers-ens-resolver/proto"
 )
 
 type EnsClient interface {
-	ResolveDomain(domain string) (string, error)
-	ResolveAddress(address string) (string, error)
+	ResolveDomains(domain []string) ([]models.ResolvedModel, error)
+	ResolveAddresses(address []string) ([]models.ResolvedModel, error)
 }
 
 type EnsHandler struct {
@@ -32,25 +32,17 @@ func (h *EnsHandler) ResolveAddresses(_ context.Context, req *proto.ResolveAddre
 		return nil, ResolveError(err)
 	}
 
+	list, err := h.client.ResolveDomains(form.Domains)
+	if err != nil {
+		return nil, fmt.Errorf("h.client.ResolveDomains: %w", err)
+	}
+
 	addresses := make([]*proto.Address, 0, len(form.Domains))
-
-	for _, domain := range form.Domains {
-		addr := &proto.Address{
-			EnsName: domain,
-		}
-
-		// TODO: Use cache
-		resolved, err := h.client.ResolveDomain(domain)
-
-		if err == nil {
-			addr.Address = resolved
-		}
-
-		if err != nil && !errors.Is(err, infura.ErrUnknownAddress) {
-			return nil, ResolveError(err)
-		}
-
-		addresses = append(addresses, addr)
+	for i := range list {
+		addresses = append(addresses, &proto.Address{
+			Address: list[i].Address,
+			EnsName: list[i].Domain,
+		})
 	}
 
 	return &proto.ResolveResponse{Addresses: addresses}, nil
@@ -62,25 +54,17 @@ func (h *EnsHandler) ResolveDomains(_ context.Context, req *proto.ResolveDomains
 		return nil, ResolveError(err)
 	}
 
+	list, err := h.client.ResolveAddresses(form.Addresses)
+	if err != nil {
+		return nil, fmt.Errorf("h.client.ResolveAddresses: %w", err)
+	}
+
 	addresses := make([]*proto.Address, 0, len(form.Addresses))
-
-	for _, addr := range form.Addresses {
-		res := &proto.Address{
-			Address: addr,
-		}
-
-		// TODO: Use cache
-		resolved, err := h.client.ResolveAddress(addr)
-
-		if err == nil {
-			res.EnsName = resolved
-		}
-
-		if err != nil && !errors.Is(err, infura.ErrUnknownDomain) {
-			return nil, ResolveError(err)
-		}
-
-		addresses = append(addresses, res)
+	for i := range list {
+		addresses = append(addresses, &proto.Address{
+			Address: list[i].Address,
+			EnsName: list[i].Domain,
+		})
 	}
 
 	return &proto.ResolveResponse{Addresses: addresses}, nil
