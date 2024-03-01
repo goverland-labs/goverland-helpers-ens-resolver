@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/goverland-labs/helpers-ens-resolver/proto"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/protocol/enspb"
 )
 
 var addressRE = regexp.MustCompile(`0x[a-fA-F0-9]{40}`)
@@ -24,7 +24,7 @@ func NewResolveDomainsForm() *ResolveDomainsForm {
 	return &ResolveDomainsForm{}
 }
 
-func (f *ResolveDomainsForm) ParseAndValidate(req *proto.ResolveDomainsRequest) (*ResolveDomainsForm, error) {
+func (f *ResolveDomainsForm) ParseAndValidate(req *enspb.ResolveDomainsRequest) (*ResolveDomainsForm, error) {
 	addresses := make([]string, 0, len(req.GetAddresses()))
 
 	for _, addr := range req.GetAddresses() {

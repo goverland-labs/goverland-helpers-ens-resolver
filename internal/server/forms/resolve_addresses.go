@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/goverland-labs/helpers-ens-resolver/proto"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/protocol/enspb"
 )
 
 var domainRE = regexp.MustCompile(`[a-zA-Z0-9-.]+\.eth`)
@@ -24,7 +24,7 @@ func NewResolveAddressesForm() *ResolveAddressesForm {
 	return &ResolveAddressesForm{}
 }
 
-func (f *ResolveAddressesForm) ParseAndValidate(req *proto.ResolveAddressesRequest) (*ResolveAddressesForm, error) {
+func (f *ResolveAddressesForm) ParseAndValidate(req *enspb.ResolveAddressesRequest) (*ResolveAddressesForm, error) {
 	domains := make([]string, 0, len(req.GetDomains()))
 
 	for _, domain := range req.GetDomains() {
