@@ -5,8 +5,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/s-larionov/process-manager"
 
-	"github.com/goverland-labs/helpers-ens-resolver/internal"
-	"github.com/goverland-labs/helpers-ens-resolver/internal/config"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/config"
 )
 
 var cfg config.App

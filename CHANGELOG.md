@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+- Moved gRPC protocol to the separated go module
+- Changed the path name of the go module
+
 ## [0.0.2] - 2023-12-05
 
 ### Added

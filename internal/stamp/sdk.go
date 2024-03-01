@@ -10,7 +10,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/goverland-labs/helpers-ens-resolver/internal/models"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/models"
 )
 
 type SDK struct {

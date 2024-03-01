@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	internalcache "github.com/goverland-labs/helpers-ens-resolver/internal/cache"
-	"github.com/goverland-labs/helpers-ens-resolver/internal/models"
+	internalcache "github.com/goverland-labs/goverland-helpers-ens-resolver/internal/cache"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/models"
 )
 
 const (

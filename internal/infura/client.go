@@ -8,9 +8,9 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/wealdtech/go-ens/v3"
 
-	internalcache "github.com/goverland-labs/helpers-ens-resolver/internal/cache"
-	"github.com/goverland-labs/helpers-ens-resolver/internal/config"
-	"github.com/goverland-labs/helpers-ens-resolver/internal/models"
+	internalcache "github.com/goverland-labs/goverland-helpers-ens-resolver/internal/cache"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/config"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/models"
 )
 
 type Client struct {

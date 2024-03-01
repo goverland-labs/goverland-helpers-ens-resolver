@@ -8,14 +8,15 @@ import (
 
 	"github.com/s-larionov/process-manager"
 
-	"github.com/goverland-labs/helpers-ens-resolver/internal/config"
-	"github.com/goverland-labs/helpers-ens-resolver/internal/infura"
-	"github.com/goverland-labs/helpers-ens-resolver/internal/server"
-	"github.com/goverland-labs/helpers-ens-resolver/internal/stamp"
-	"github.com/goverland-labs/helpers-ens-resolver/pkg/grpcsrv"
-	"github.com/goverland-labs/helpers-ens-resolver/pkg/health"
-	"github.com/goverland-labs/helpers-ens-resolver/pkg/prometheus"
-	"github.com/goverland-labs/helpers-ens-resolver/proto"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/protocol/enspb"
+
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/config"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/infura"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/server"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/stamp"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/pkg/grpcsrv"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/pkg/health"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/pkg/prometheus"
 )
 
 type Application struct {
@@ -96,7 +97,7 @@ func (a *Application) initGRPCWorker() error {
 		return ctx, nil
 	})
 
-	proto.RegisterEnsServer(srv, server.NewEnsHandler(a.stamp))
+	enspb.RegisterEnsServer(srv, server.NewEnsHandler(a.stamp))
 	a.manager.AddWorker(grpcsrv.NewGrpcServerWorker("resolve api", srv, a.cfg.GRPC.Listen))
 
 	return nil

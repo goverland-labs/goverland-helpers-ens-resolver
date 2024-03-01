@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/goverland-labs/helpers-ens-resolver/internal/models"
-	"github.com/goverland-labs/helpers-ens-resolver/internal/server/forms"
-	"github.com/goverland-labs/helpers-ens-resolver/proto"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/models"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/server/forms"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/protocol/enspb"
 )
 
 type EnsClient interface {
@@ -15,7 +15,7 @@ type EnsClient interface {
 }
 
 type EnsHandler struct {
-	proto.UnimplementedEnsServer
+	enspb.UnimplementedEnsServer
 
 	client EnsClient
 }
@@ -26,7 +26,7 @@ func NewEnsHandler(c EnsClient) *EnsHandler {
 	}
 }
 
-func (h *EnsHandler) ResolveAddresses(_ context.Context, req *proto.ResolveAddressesRequest) (*proto.ResolveResponse, error) {
+func (h *EnsHandler) ResolveAddresses(_ context.Context, req *enspb.ResolveAddressesRequest) (*enspb.ResolveResponse, error) {
 	form, err := forms.NewResolveAddressesForm().ParseAndValidate(req)
 	if err != nil {
 		return nil, ResolveError(err)
@@ -37,18 +37,18 @@ func (h *EnsHandler) ResolveAddresses(_ context.Context, req *proto.ResolveAddre
 		return nil, fmt.Errorf("h.client.ResolveDomains: %w", err)
 	}
 
-	addresses := make([]*proto.Address, 0, len(form.Domains))
+	addresses := make([]*enspb.Address, 0, len(form.Domains))
 	for i := range list {
-		addresses = append(addresses, &proto.Address{
+		addresses = append(addresses, &enspb.Address{
 			Address: list[i].Address,
 			EnsName: list[i].Domain,
 		})
 	}
 
-	return &proto.ResolveResponse{Addresses: addresses}, nil
+	return &enspb.ResolveResponse{Addresses: addresses}, nil
 }
 
-func (h *EnsHandler) ResolveDomains(_ context.Context, req *proto.ResolveDomainsRequest) (*proto.ResolveResponse, error) {
+func (h *EnsHandler) ResolveDomains(_ context.Context, req *enspb.ResolveDomainsRequest) (*enspb.ResolveResponse, error) {
 	form, err := forms.NewResolveDomainsForm().ParseAndValidate(req)
 	if err != nil {
 		return nil, ResolveError(err)
@@ -59,13 +59,13 @@ func (h *EnsHandler) ResolveDomains(_ context.Context, req *proto.ResolveDomains
 		return nil, fmt.Errorf("h.client.ResolveAddresses: %w", err)
 	}
 
-	addresses := make([]*proto.Address, 0, len(form.Addresses))
+	addresses := make([]*enspb.Address, 0, len(form.Addresses))
 	for i := range list {
-		addresses = append(addresses, &proto.Address{
+		addresses = append(addresses, &enspb.Address{
 			Address: list[i].Address,
 			EnsName: list[i].Domain,
 		})
 	}
 
-	return &proto.ResolveResponse{Addresses: addresses}, nil
+	return &enspb.ResolveResponse{Addresses: addresses}, nil
 }
