@@ -1,4 +1,4 @@
-package stamp
+package sdk
 
 import (
 	"errors"

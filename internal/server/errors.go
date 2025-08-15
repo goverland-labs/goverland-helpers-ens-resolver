@@ -6,8 +6,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/infura"
 	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/server/forms"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/pkg/sdk/infura"
 )
 
 func ResolveError(err error) error {

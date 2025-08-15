@@ -3,6 +3,7 @@ package stamp
 import (
 	"errors"
 	"fmt"
+	"slices"
 
 	internalcache "github.com/goverland-labs/goverland-helpers-ens-resolver/internal/cache"
 	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/models"
@@ -48,7 +49,7 @@ func (c *Client) ResolveAddresses(addresses []string) ([]models.ResolvedModel, e
 		return resp, nil
 	}
 
-	for _, chunk := range chunkSlice(missed, maxLookupSize) {
+	for chunk := range slices.Chunk(missed, maxLookupSize) {
 		list, err := c.sdk.ResolveAddresses(chunk)
 		if err != nil {
 			return nil, fmt.Errorf("c.sdk.ResolveAddresses: %w", err)
@@ -61,22 +62,4 @@ func (c *Client) ResolveAddresses(addresses []string) ([]models.ResolvedModel, e
 	}
 
 	return resp, nil
-}
-
-func chunkSlice(slice []string, chunkSize int) [][]string {
-	var chunks [][]string
-	for {
-		if len(slice) == 0 {
-			break
-		}
-
-		if len(slice) < chunkSize {
-			chunkSize = len(slice)
-		}
-
-		chunks = append(chunks, slice[0:chunkSize])
-		slice = slice[chunkSize:]
-	}
-
-	return chunks
 }
