@@ -5,3 +5,4 @@
 !/protocol/bin/compile_proto.sh
 .env
 /goverland-helpers-ens-resolver
+/vendor

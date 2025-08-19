@@ -7,6 +7,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-08-19
+
+### Added
+- Getting all user ens names by NFTs contracts
+
 ## [0.1.1] - 2024-03-06
 
 ### Fixed
