@@ -7,6 +7,7 @@ import (
 
 	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal"
 	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/config"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/logger"
 )
 
 var cfg config.App
@@ -22,7 +23,7 @@ func init() {
 		panic(err)
 	}
 	zerolog.SetGlobalLevel(level)
-	process.SetLogger(&PMLogger{})
+	process.SetLogger(&logger.PMLogger{})
 }
 
 func main() {

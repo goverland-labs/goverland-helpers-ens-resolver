@@ -6,5 +6,6 @@ type App struct {
 	Health     Health
 	Infura     Infura
 	Stamp      Stamp
+	Alchemy    Alchemy
 	GRPC       GRPC
 }

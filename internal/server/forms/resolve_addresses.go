@@ -48,9 +48,3 @@ func (f *ResolveAddressesForm) ParseAndValidate(req *enspb.ResolveAddressesReque
 
 	return f, nil
 }
-
-func (f *ResolveAddressesForm) ConvertToMap() map[string]interface{} {
-	return map[string]interface{}{
-		"domains": f.Domains,
-	}
-}

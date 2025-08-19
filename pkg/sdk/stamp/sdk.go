@@ -10,7 +10,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/metrics"
 	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/models"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/pkg/sdk"
 )
 
 type SDK struct {
@@ -54,7 +56,7 @@ func (s *SDK) ResolveAddresses(addresses []string) ([]models.ResolvedModel, erro
 		return nil, fmt.Errorf("http.NewRequest: %w", err)
 	}
 	var result resolveAddressResponse
-	err = s.sendRequest(req, &result)
+	err = s.sendRequest(req, params.Method, &result)
 	if err != nil {
 		return nil, fmt.Errorf("s.sendRequest: %w", err)
 	}
@@ -70,9 +72,10 @@ func (s *SDK) ResolveAddresses(addresses []string) ([]models.ResolvedModel, erro
 	return resp, nil
 }
 
-func (s *SDK) sendRequest(req *http.Request, result interface{}) error {
+func (s *SDK) sendRequest(req *http.Request, alias string, result interface{}) error {
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json; charset=utf-8")
+	req.Header.Set(metrics.HeaderAlias, alias)
 
 	res, err := s.client.Do(req)
 	if err != nil {
@@ -95,7 +98,7 @@ func (s *SDK) sendRequest(req *http.Request, result interface{}) error {
 		return nil
 	}
 
-	if err := json.Unmarshal(body, result); err != nil {
+	if err = json.Unmarshal(body, result); err != nil {
 		return fmt.Errorf("json.Unmarshal: %w", err)
 	}
 
@@ -105,32 +108,32 @@ func (s *SDK) sendRequest(req *http.Request, result interface{}) error {
 func (s *SDK) parseError(status int, body []byte) error {
 	switch status {
 	case http.StatusNotFound:
-		return ErrNotFound
+		return sdk.ErrNotFound
 	case http.StatusUnauthorized:
-		return ErrUnauthorized
+		return sdk.ErrUnauthorized
 	case http.StatusForbidden:
-		return ErrForbidden
+		return sdk.ErrForbidden
 	case http.StatusTooManyRequests:
 		var resp map[string]interface{}
 
 		if err := json.Unmarshal(body, &resp); err != nil {
-			return NewTooManyRequestsError(0)
+			return sdk.NewTooManyRequestsError(0)
 		}
 
 		seconds, ok := resp["retry_after"].(int)
 		if !ok {
-			return NewTooManyRequestsError(0)
+			return sdk.NewTooManyRequestsError(0)
 		}
 
-		return NewTooManyRequestsError(time.Duration(seconds) * time.Second)
+		return sdk.NewTooManyRequestsError(time.Duration(seconds) * time.Second)
 	case http.StatusBadRequest:
 		var errors map[string]interface{}
 
 		if err := json.Unmarshal(body, &errors); err != nil {
-			return NewValidationError(err.Error(), nil)
+			return sdk.NewValidationError(err.Error(), nil)
 		}
 
-		return NewValidationError("validation error", errors)
+		return sdk.NewValidationError("validation error", errors)
 	}
-	return ErrInternalServer
+	return sdk.ErrInternalServer
 }

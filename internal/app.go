@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -11,12 +12,13 @@ import (
 	"github.com/goverland-labs/goverland-helpers-ens-resolver/protocol/enspb"
 
 	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/config"
-	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/infura"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/metrics"
 	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/server"
-	"github.com/goverland-labs/goverland-helpers-ens-resolver/internal/stamp"
 	"github.com/goverland-labs/goverland-helpers-ens-resolver/pkg/grpcsrv"
 	"github.com/goverland-labs/goverland-helpers-ens-resolver/pkg/health"
 	"github.com/goverland-labs/goverland-helpers-ens-resolver/pkg/prometheus"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/pkg/sdk/alchemy"
+	"github.com/goverland-labs/goverland-helpers-ens-resolver/pkg/sdk/stamp"
 )
 
 type Application struct {
@@ -24,8 +26,8 @@ type Application struct {
 	manager *process.Manager
 	cfg     config.App
 
-	infura *infura.Client
-	stamp  *stamp.Client
+	stamp   *stamp.Client
+	alchemy *alchemy.Client
 }
 
 func NewApplication(cfg config.App) (*Application, error) {
@@ -74,20 +76,19 @@ func (a *Application) bootstrap() error {
 }
 
 func (a *Application) initServices() error {
-	inf, err := infura.NewClient(a.cfg.Infura)
-	if err != nil {
-		return err
-	}
-
-	a.infura = inf
-
-	sdk := stamp.NewSDK(a.cfg.Stamp.Endpoint, nil)
+	sdk := stamp.NewSDK(a.cfg.Stamp.Endpoint, &http.Client{
+		Transport: metrics.NewRequestWatcher("stamp"),
+	})
 	sc, err := stamp.NewClient(sdk)
 	if err != nil {
 		return err
 	}
 
 	a.stamp = sc
+
+	a.alchemy = alchemy.NewClient(a.cfg.Alchemy.APIKey, &http.Client{
+		Transport: metrics.NewRequestWatcher("alchemy"),
+	})
 
 	return nil
 }
@@ -97,7 +98,7 @@ func (a *Application) initGRPCWorker() error {
 		return ctx, nil
 	})
 
-	enspb.RegisterEnsServer(srv, server.NewEnsHandler(a.stamp))
+	enspb.RegisterEnsServer(srv, server.NewEnsHandler(a.stamp, a.alchemy))
 	a.manager.AddWorker(grpcsrv.NewGrpcServerWorker("resolve api", srv, a.cfg.GRPC.Listen))
 
 	return nil

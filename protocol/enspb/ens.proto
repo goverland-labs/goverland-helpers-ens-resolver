@@ -7,6 +7,7 @@ package enspb;
 service Ens {
   rpc ResolveAddresses(ResolveAddressesRequest) returns (ResolveResponse);
   rpc ResolveDomains(ResolveDomainsRequest) returns (ResolveResponse);
+  rpc ResolveAllDomains(ResolveAllDomainsRequest) returns (ResolveAllDomainsResponse);
 }
 
 message ResolveAddressesRequest {
@@ -24,4 +25,12 @@ message Address {
 
 message ResolveResponse {
   repeated Address addresses = 1;
+}
+
+message ResolveAllDomainsRequest {
+  string address = 1;
+}
+
+message ResolveAllDomainsResponse {
+  repeated string domains = 1;
 }
